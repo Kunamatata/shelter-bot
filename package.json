@@ -1,7 +1,7 @@
 {
-  "name": "discord-bot",
+  "name": "shelter",
   "version": "1.0.0",
-  "description": "A sample bot for discord",
+  "description": "A simple bot for discord",
   "main": "index.js",
   "license": "MIT",
   "author": "Maxime Caly",
