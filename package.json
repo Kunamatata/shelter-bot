@@ -1,0 +1,17 @@
+{
+  "name": "discord-bot",
+  "version": "1.0.0",
+  "description": "A sample bot for discord",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Maxime Caly",
+  "dependencies": {
+    "discord.js": "^9.3.0",
+    "dotenv": "^2.0.0",
+    "request": "^2.75.0",
+    "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
