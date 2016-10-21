@@ -13,14 +13,14 @@ const token = process.env.BOT_TOKEN;
 // the ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted.
 
-var giphy_config = {
+let giphy_config = {
   "api_key": "dc6zaTOxFJmzC",
   "rating": "r",
   "uri": "http://api.giphy.com/v1/gifs/search?q=",
   "permission": ["NORMAL"],
 };
 
-var author = {
+let author = {
   name: "Maxime Caly",
   username: "Kunamatata",
   twitter: "https://twitter.com/TheKunamatata",
@@ -29,7 +29,7 @@ var author = {
 }
 
 function get_gif(params) {
-  var config = {
+  let config = {
     params: params,
     api_key: giphy_config.api_key,
     rating: 'r',
@@ -88,18 +88,26 @@ let commands = {
   "whoami": {
     "description" : "usage : !whoami - did you forget who you are ?",
     method: function(bot,msg){
-      var message = `You are @${msg.author.username}`
+      let message = `You are @${msg.author.username}`
       msg.channel.sendMessage(message)
     }
   },
   "author": {
     "description" : "usage : !author - who created me ?",
     method: function(bot,msg){
-      var prettyCode = `\`\`\`${JSON.stringify(author, null, 2)}\`\`\``
-      var message = `${author.name} created me ! I'm his little bot ♥
+      let prettyCode = `\`\`\`${JSON.stringify(author, null, 2)}\`\`\``
+      let message = `${author.name} created me ! I'm his little bot ♥
       Here's some information : 
       ${prettyCode}
       `
+      msg.channel.sendMessage(message)
+    }
+  },
+  "shelter": {
+    "description" : "usage : !author - I'll give you shelter :heart:",
+    method: function(bot,msg){
+      let message = `:cloud_rain::cloud_rain:
+      :umbrella2:`
       msg.channel.sendMessage(message)
     }
   }
@@ -113,7 +121,7 @@ let commands = {
  */
 function checkMessageForCommand(msg) {
   let cmdTxt = msg.content.split(/\W+/)[1]
-  var cmd = commands[cmdTxt]
+  let cmd = commands[cmdTxt]
   let tags = msg.content.split(" ")
 
   // We dont't want the bot to answer to itself 
@@ -127,7 +135,7 @@ function checkMessageForCommand(msg) {
 bot.on('ready', () => {
   console.log("ready")
   // console.log(bot.users.find('discriminator', '9623'))
-  // var users = bot.users.filter(user => user.username === "Kunamatata")
+  // let users = bot.users.filter(user => user.username === "Kunamatata")
   // console.log(users)
     // let generalChannel = bot.channels.filter(function(channel){
     //   return channel.name === 'general' && channel.guild.name === "Gaming Room"
