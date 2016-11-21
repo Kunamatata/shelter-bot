@@ -1,8 +1,9 @@
+require('dotenv').config()
 const Discord = require('discord.js');
 const request = require("request")
 const rp = require("request-promise")
 const querystring = require('querystring');
-require('dotenv').config()
+
   // create an instance of a Discord Client, and call it bot
 const bot = new Discord.Client();
 
@@ -134,13 +135,7 @@ function checkMessageForCommand(msg) {
 
 bot.on('ready', () => {
   console.log("ready")
-  // console.log(bot.users.find('discriminator', '9623'))
-  // let users = bot.users.filter(user => user.username === "Kunamatata")
-  // console.log(users)
-    // let generalChannel = bot.channels.filter(function(channel){
-    //   return channel.name === 'general' && channel.guild.name === "Gaming Room"
-    // })
-    // console.log(generalChannel.array()[0].sendMessage("Coucou"))
+  console.log(`Conntected as ${bot.user.username}#${bot.user.discriminator}`)
 });
 
 /**
