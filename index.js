@@ -17,7 +17,7 @@ const token = process.env.BOT_TOKEN;
 let giphy_config = {
   "api_key": "dc6zaTOxFJmzC",
   "rating": "r",
-  "uri": "http://api.giphy.com/v1/gifs/search?q=",
+  "uri": "http://api.giphy.com/v1/gifs/search?",
   "permission": ["NORMAL"],
 };
 
@@ -31,7 +31,7 @@ let author = {
 
 function get_gif(params) {
   let config = {
-    params: params,
+    q: params.join(' '),
     api_key: giphy_config.api_key,
     rating: 'r',
     limit: 1
