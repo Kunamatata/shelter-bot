@@ -4,6 +4,7 @@ const request = require('request')
 const rp = require('request-promise')
 const querystring = require('querystring')
 const wow = require('./modules/wow')
+const ow = require('./modules/ow')
 
 // create an instance of a Discord Client, and call it bot
 const bot = new Discord.Client()
@@ -114,6 +115,16 @@ let commands = {
         msg.channel.sendFile(obj.thumbnail)
       }).catch(err => {
         msg.channel.sendMessage(err)
+      })
+    }
+  },
+  'ow': {
+    'description': 'usage : !ow **[plateform] [region] [character name] [battletag]** - Gives you information about the character',
+    method: function (bot, msg, params) {
+      ow.getOverwatchProfile(params[0], params[1], params[2], params[3]).then((obj) => {
+        msg.channel.sendMessage(obj.message)
+      }).catch((err) => {
+        msg.channel.sendMessage(err.error)
       })
     }
   }
