@@ -1,53 +1,22 @@
 const blizzard = require('blizzard.js').initialize({
-  apikey: process.env.BLIZZARD_API_KEY
+  key: process.env.BLIZZARD_CLIENT_ID,
+  secret: process.env.BLIZZARD_CLIENT_SECRET,
 })
 
-module.exports = {
-  getCharacterInformation: function (region, realm, character) {
-    return new Promise((resolve, reject) => {
-      console.log(regions.indexOf(region))
-      if(regions.indexOf(region) === -1)
-        reject(`That region doesn't exist...\nAvailable regions are : ${regions.join(', ')}`)
-      blizzard.wow.character(['profile', 'items', 'guild', 'progression'], {
-        origin: region,
-        realm: realm,
-        name: character
-      })
-        .then(response => {
-          let data = response.data
-          let raids = data.progression.raids.slice(-3)
 
-          let message = `${data.name} - ${data.realm} - ${races[data.race]} ${classes[data.class]} - ${data.level} \nAverage Item Level : ${data.items.averageItemLevel} - Average Item Level Equipped : ${data.items.averageItemLevelEquipped}`
-          
-          if(data.guild){
-            message += `\n\nGuild : ${data.guild.name} - ${data.guild.realm} - Members : ${data.guild.members}`
-          }
 
-          let raidProgressions = getRaidProgression(raids)
-          for (let raidProgress of raidProgressions){
-            message += `\n\n**${raidProgress.name}** - LFR : ${raidProgress.lfr}/${raidProgress.bosses} - Normal : ${raidProgress.normal}/${raidProgress.bosses} - Heroic ${raidProgress.heroic}/${raidProgress.bosses} - Mythic ${raidProgress.mythic}/${raidProgress.bosses}`
-          }
-
-          console.log(message)
-          
-          resolve({
-            message: message,
-            thumbnail: `https://${region}.battle.net/static-render/${region}/${data.thumbnail}`
-          })
-        })
-        .catch(err => {
-          if(err.response.data.status === "nok"){
-            reject(err.response.data.reason)
-          }
-          else {
-            reject("This service is currently unavailable...")
-          }
-        })
-    })
-  }
+function refreshToken() {
+  blizzard.getApplicationToken().then(response => {
+    let { access_token, expires_in } = response.data;
+    blizzard.defaults.token = access_token;
+    blizzard.defaults.expiresIn = expires_in;
+    setTimeout(refreshToken, blizzard.defaults.expiresIn * 1000);
+  })
 }
 
-function getRaidProgression (raids) {
+refreshToken();
+
+function getRaidProgression(raids) {
   let res = []
   for (let raid of raids) {
     let obj = {}
@@ -57,7 +26,7 @@ function getRaidProgression (raids) {
       acc.heroic += curr.heroicKills ? 1 : 0
       acc.mythic += curr.mythicKills ? 1 : 0
       return acc
-    }, {lfr: 0, normal: 0, heroic: 0, mythic: 0})
+    }, { lfr: 0, normal: 0, heroic: 0, mythic: 0 })
     obj.name = raid.name
     obj.bosses = raid.bosses.length
     res.push(obj)
@@ -65,7 +34,7 @@ function getRaidProgression (raids) {
   return res
 }
 
-var factions = {
+const factions = {
   '0': {
     'name': 'Alliance',
     'icon': 'a'
@@ -109,4 +78,46 @@ const classes = {
   '10': 'Monk',
   '11': 'Druid',
   '12': 'Demon Hunter'
+}
+
+
+module.exports = {
+  getCharacterInformation: function(region, realm, character) {
+    return new Promise((resolve, reject) => {
+      if (regions.indexOf(region) === -1)
+        reject(`That region doesn't exist...\nAvailable regions are : ${regions.join(', ')}`)
+      blizzard.wow.character(['profile', 'items', 'guild', 'progression'], {
+          origin: region,
+          realm: realm,
+          name: character
+        })
+        .then(response => {
+          let data = response.data
+          let raids = data.progression.raids.slice(-3)
+
+          let message = `${data.name} - ${data.realm} - ${races[data.race]} ${classes[data.class]} - ${data.level} \nAverage Item Level : ${data.items.averageItemLevel} - Average Item Level Equipped : ${data.items.averageItemLevelEquipped}`
+
+          if (data.guild) {
+            message += `\n\nGuild : ${data.guild.name} - ${data.guild.realm} - Members : ${data.guild.members}`
+          }
+
+          let raidProgressions = getRaidProgression(raids)
+          for (let raidProgress of raidProgressions) {
+            message += `\n\n**${raidProgress.name}** - LFR : ${raidProgress.lfr}/${raidProgress.bosses} - Normal : ${raidProgress.normal}/${raidProgress.bosses} - Heroic ${raidProgress.heroic}/${raidProgress.bosses} - Mythic ${raidProgress.mythic}/${raidProgress.bosses}`
+          }
+
+          resolve({
+            message: message,
+            thumbnail: `https://render-${region}.worldofwarcraft.com/character/${data.thumbnail}`
+          })
+        })
+        .catch(err => {
+          if (err.response.data.status === "nok") {
+            reject(err.response.data.reason)
+          } else {
+            reject("This service is currently unavailable...")
+          }
+        })
+    })
+  }
 }
