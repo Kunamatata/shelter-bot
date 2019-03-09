@@ -10,7 +10,7 @@
     "pm2": "pm2 start index.js"
   },
   "engines": {
-    "node": "8.2.1"
+    "node": "11.10.0"
   },
   "dependencies": {
     "blizzard.js": "3.0.0",
