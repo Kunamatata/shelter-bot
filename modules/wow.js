@@ -1,8 +1,9 @@
+if (process.env.NODE_ENV !== 'production') require('dotenv').config()
+
 const blizzard = require('blizzard.js').initialize({
   key: process.env.BLIZZARD_CLIENT_ID,
   secret: process.env.BLIZZARD_CLIENT_SECRET,
 })
-
 
 
 function refreshToken() {
@@ -11,6 +12,8 @@ function refreshToken() {
     blizzard.defaults.token = access_token;
     blizzard.defaults.expiresIn = expires_in;
     setTimeout(refreshToken, blizzard.defaults.expiresIn * 1000);
+  }).catch(e => {
+    console.log('oho');
   })
 }
 
