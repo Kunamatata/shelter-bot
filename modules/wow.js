@@ -48,21 +48,27 @@ const factions = {
 const regions = ['us', 'eu', 'sea', 'kr', 'tw', 'cn'];
 
 const races = {
-  '1': 'Human',
-  '2': 'Orc',
-  '3': 'Dwarf',
-  '4': 'Night Elf',
-  '5': 'Undead',
-  '6': 'Tauren',
-  '7': 'Gnome',
-  '8': 'Troll',
-  '9': 'Goblin',
-  '10': 'Blood Elf',
-  '11': 'Draenei',
-  '22': 'Worgen',
-  '24': 'Pandaren',
-  '25': 'Pandaren',
-  '26': 'Pandaren'
+  "1":"Human",
+  "2":"Orc",
+  "3":"Dwarf",
+  "4":"Night Elf",
+  "5":"Undead",
+  "6":"Tauren",
+  "7":"Gnome",
+  "8":"Troll",
+  "9":"Goblin",
+  "10":"Blood Elf",
+  "11":"Draenei",
+  "22":"Worgen",
+  "24":"Pandaren",
+  "25":"Pandaren",
+  "26":"Pandaren",
+  "27":"Nightborne",
+  "28":"Highmountain Tauren",
+  "29":"Void Elf",
+  "30":"Lightforged Draenei",
+  "34":"Dark Iron Dwarf",
+  "36":"Mag'har Orc",
 }
 
 const classes = {
@@ -94,7 +100,6 @@ module.exports = {
         .then(response => {
           let data = response.data
           let raids = data.progression.raids.slice(-3)
-
           let message = `${data.name} - ${data.realm} - ${races[data.race]} ${classes[data.class]} - ${data.level} \nAverage Item Level : ${data.items.averageItemLevel} - Average Item Level Equipped : ${data.items.averageItemLevelEquipped}`
 
           if (data.guild) {
@@ -108,7 +113,7 @@ module.exports = {
 
           resolve({
             message: message,
-            thumbnail: `https://render-${region}.worldofwarcraft.com/character/${data.thumbnail}`
+            thumbnail: `https://render-${region}.WORLDOFWARCRAFT.com/character/${data.thumbnail}`
           })
         })
         .catch(err => {
