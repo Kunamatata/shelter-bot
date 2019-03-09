@@ -1,3 +1,6 @@
+const querystring = require('querystring');
+const rp = require('request-promise');
+
 const giphy_config = {
   'api_key': 'dc6zaTOxFJmzC',
   'rating': 'r',

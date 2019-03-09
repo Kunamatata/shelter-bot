@@ -1,8 +1,4 @@
-const Discord = require('discord.js')
-const rp = require('request-promise')
-const querystring = require('querystring')
-const wow = require('./modules/wow')
-const ow = require('./modules/ow')
+const Discord = require('discord.js');
 
 // for HEROKU since env variables are added through their dashboard
 if (process.env.NODE_ENV !== 'production') require('dotenv').config()

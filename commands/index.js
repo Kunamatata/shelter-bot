@@ -1,11 +1,13 @@
-const util = require("./utils");
+const utils = require("./utils");
+const wow = require('../modules/wow');
+const ow = require('../modules/ow');
 
-module.exports = {
+const commands = {
     'gif': {
       'description': 'usage: !gif **[image tags]** - get awesome gifs',
       method: function(bot, msg, params) {
         if (params.length > 0) {
-          get_gif(params).then(function(body) {
+          utils.get_gif(params).then(function(body) {
             let responseObj = JSON.parse(body)
             msg.channel.send(responseObj.data.url)
           })
@@ -35,7 +37,7 @@ module.exports = {
       'description': 'usage : !author - who created me ?',
       method: function(bot, msg) {
         let prettyCode = `\`\`\`${JSON.stringify(utils.author, null, 2)}\`\`\``
-        let message = `${author.name} created me ! I'm his little bot ♥\nHere's some information : 
+        let message = `${utils.author.name} created me ! I'm his little bot ♥\nHere's some information : 
         ${prettyCode}
         `
         msg.channel.send(message)
@@ -71,3 +73,5 @@ module.exports = {
       }
     }
   }
+
+  module.exports = commands;
