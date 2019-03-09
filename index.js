@@ -1,9 +1,11 @@
-require('dotenv').config()
 const Discord = require('discord.js')
 const rp = require('request-promise')
 const querystring = require('querystring')
 const wow = require('./modules/wow')
 const ow = require('./modules/ow')
+
+// for HEROKU since env variables are added through their dashboard
+if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 
 // create an instance of a Discord Client, and call it bot
 const bot = new Discord.Client()
