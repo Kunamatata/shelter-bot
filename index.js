@@ -1,6 +1,5 @@
 require('dotenv').config()
 const Discord = require('discord.js')
-const request = require('request')
 const rp = require('request-promise')
 const querystring = require('querystring')
 const wow = require('./modules/wow')
@@ -65,10 +64,10 @@ let commands = {
       if (params.length > 0) {
         get_gif(params).then(function (body) {
           let responseObj = JSON.parse(body)
-          msg.channel.sendMessage(responseObj.data.url)
+          msg.channel.send(responseObj.data.url)
         })
       } else {
-        msg.channel.sendMessage(this.description)
+        msg.channel.send(this.description)
       }
     }
   },
@@ -79,14 +78,14 @@ let commands = {
       for (command in commands) {
         message += boldify(command) + ' - ' + commands[command].description + '\n'
       }
-      msg.channel.sendMessage(message)
+      msg.channel.send(message)
     }
   },
   'whoami': {
     'description': 'usage : !whoami - did you forget who you are ?',
     method: function (bot, msg) {
       let message = `You are @${msg.author.username}`
-      msg.channel.sendMessage(message)
+      msg.channel.send(message)
     }
   },
   'author': {
@@ -96,7 +95,7 @@ let commands = {
       let message = `${author.name} created me ! I'm his little bot ♥\nHere's some information : 
       ${prettyCode}
       `
-      msg.channel.sendMessage(message)
+      msg.channel.send(message)
     }
   },
   'shelter': {
@@ -104,17 +103,17 @@ let commands = {
     method: function (bot, msg) {
       let message = `:cloud_rain::cloud_rain:
       :umbrella2:`
-      msg.channel.sendMessage(message)
+      msg.channel.send(message)
     }
   },
   'wow': {
     'description': 'usage : !wow **[region] [realm] [character name]** - Gives you information about the character',
     method: function (bot, msg, params) {
       wow.getCharacterInformation(params[0], params[1], params[2]).then((obj) => {
-        msg.channel.sendMessage(obj.message)
-        msg.channel.sendFile(obj.thumbnail)
+        msg.channel.send(obj.message)
+        msg.channel.send({files: [obj.thumbnail]})
       }).catch(err => {
-        msg.channel.sendMessage(err)
+        msg.channel.send(err)
       })
     }
   },
@@ -122,9 +121,9 @@ let commands = {
     'description': 'usage : !ow **[plateform] [region] [character name] [battletag]** - Gives you information about the character',
     method: function (bot, msg, params) {
       ow.getOverwatchProfile(params[0], params[1], params[2], params[3]).then((obj) => {
-        msg.channel.sendMessage(obj.message)
+        msg.channel.send(obj.message)
       }).catch((err) => {
-        msg.channel.sendMessage(err.error)
+        msg.channel.send(err.error)
       })
     }
   }
@@ -141,7 +140,7 @@ function checkMessageForCommand (msg) {
   let tags = msg.content.split(' ')
 
   // We dont't want the bot to answer to itself 
-  if (msg.author.id != bot.user.id) {
+  if (msg.author.id !== bot.user.id) {
     if (cmd) {
       cmd.method(bot, msg, tags.slice(1))
     }

@@ -14,12 +14,12 @@
   },
   "dependencies": {
     "blizzard.js": "3.0.0",
-    "discord.js": "^10.0.1",
+    "discord.js": "^11.4.2",
     "dotenv": "^2.0.0",
     "request": "^2.75.0",
     "request-promise": "^4.1.1"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.18.10"
   }
 }
